@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "clarifai": "^2.9.0",
+    "gh-pages": "^2.0.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-particles-js": "^2.3.0",
@@ -11,6 +12,8 @@
     "react-tilt": "^0.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -19,6 +22,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "homepage": "http://vyper248.github.io/image-recognition",
   "browserslist": [
     ">0.2%",
     "not dead",
