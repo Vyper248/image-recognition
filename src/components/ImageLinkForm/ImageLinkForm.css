@@ -11,7 +11,7 @@
 
 .modeBtn {
     position: relative;
-    top: 12px;
+    top: 2px;
     width: 200px;
     font-size: 1.5em;
     padding: 5px;
@@ -21,6 +21,7 @@
     color: white;
     border: 1px solid white;
     z-index: 1;
+    margin-bottom: 0px;
 }
 
 .modeBtn:focus {
@@ -62,7 +63,7 @@
     border: 1px solid white;
     box-shadow: 1px 1px 5px 1px gray;
     max-width: 1000px;
-    margin: 10px auto;
+    margin: 0px auto 10px auto;
     position: relative;
     padding: 20px;
     border-radius: 10px;

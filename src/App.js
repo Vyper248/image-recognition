@@ -129,10 +129,10 @@ class App extends Component {
     onSubmit = () => {
         const input = this.state.input;
         const mode = this.state.mode;
-        if (/http(s?):\/\/[a-zA-Z0-9/.-_]+(.jpg$|.png$|.bmp$|.jpeg$)/.test(input) === false){
-            this.setState({imageUrl: ''});
-            return;
-        }
+        // if (/http(s?):\/\/[a-zA-Z0-9/.-_]+(.jpg$|.png$|.bmp$|.jpeg$)/.test(input) === false){
+        //     this.setState({imageUrl: ''});
+        //     return;
+        // }
                 
         // return;
         if (mode === 'face'){

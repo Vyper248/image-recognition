@@ -72,7 +72,7 @@ const getImageStats = (data, faceIndex, mode) => {
                 {
                     foodConcepts.map((concept, i) => {
                         return (
-                            <div className="statFoodGroup">
+                            <div className="statFoodGroup" key={i}>
                                 <div className="statFoodName">{concept.name}</div>
                                 <div className="statFoodValue">{(concept.value*100).toFixed(2)+'%'}</div>
                             </div>
