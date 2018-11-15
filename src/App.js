@@ -104,7 +104,7 @@ class App extends Component {
                 <Rank />
                 <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
                 {/* <Particles params={config}/> */}
-                <ImageDetection imageUrl={this.state.imageUrl} data={this.state.data} onFaceSelect={this.onFaceSelect} faceIndex={this.state.selectedFace}/>
+                <ImageDetection imageUrl={this.state.imageUrl} data={this.state.data} onFaceSelect={this.onFaceSelect} faceIndex={this.state.selectedFace} mode={this.state.mode}/>
             </div>
         );
     }
@@ -118,7 +118,7 @@ class App extends Component {
             const modeBtns = document.querySelectorAll('.modeBtn');
             Array.from(modeBtns).forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
-            this.setState({mode});
+            this.setState({mode, imageUrl: '', data: [], selectedFace: 0});
         }
     }
     
@@ -143,6 +143,8 @@ class App extends Component {
                     const data = response.outputs[0].data;
                     if (data.regions){
                         this.setState({data: data.regions, imageUrl: input});
+                    } else {
+                        this.setState({imageUrl: input});
                     }
                 },
                 (err) => {
@@ -151,10 +153,16 @@ class App extends Component {
             );
         } else if (mode === 'food'){
             app.models.predict(Clarifai.FOOD_MODEL, input).then(
-                function(response) {
+                (response) => {
                     console.log(response);
+                    const data = response.outputs[0].data;
+                    if (data.concepts.length > 0){
+                        this.setState({data, imageUrl: input});
+                    } else {
+                        this.setState({imageUrl: input});
+                    }
                 },
-                function(err) {
+                (err) => {
                     console.error(err);
                 }
             );
