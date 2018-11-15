@@ -1,0 +1,29 @@
+.imageDetection {
+    display: flex;
+    justify-content: center;
+    padding: 0px 10px;
+    position: relative;
+}
+
+.imageContainer {
+    position: relative;
+}
+
+.imageDetection img {
+    border: 1px solid white;
+    width: 100%;
+    height: auto;
+    max-width: 780px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.imageStats {
+    border: 1px solid white;
+    width: 200px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}

@@ -1,0 +1,90 @@
+
+
+.modeBtn:first-of-type {
+    border-right: none;
+    border-top-left-radius: 10px;
+}
+
+.modeBtn:last-of-type {
+    border-top-right-radius: 10px;
+}
+
+.modeBtn {
+    position: relative;
+    top: 12px;
+    width: 200px;
+    font-size: 1.5em;
+    padding: 5px;
+    background-color: rgb(200, 0, 0);
+    -webkit-appearance: none;
+    cursor: pointer;
+    color: white;
+    border: 1px solid white;
+    z-index: 1;
+}
+
+.modeBtn:focus {
+    outline: none;
+}
+
+.modeBtn.selected {
+    background-color: rgb(150, 0, 0);
+    border-bottom: none;
+    z-index: 3;
+}
+
+.linkForm input {
+    width: 100%;
+    font-size: 1.5em;
+    padding: 10px;
+    display: block;
+    margin: auto;
+}
+
+.linkForm button {
+    width: 30%;
+    min-width: 100px;
+    font-size: 1.5em;
+    padding: 10px;
+    background-color: rgb(200, 0, 0);
+    -webkit-appearance: none;
+    cursor: pointer;
+    color: white;
+    margin: 10px;
+    border: 1px solid white;
+}
+
+.linkForm {
+    display: flex;
+}
+
+.linkContainer {
+    border: 1px solid white;
+    box-shadow: 1px 1px 5px 1px gray;
+    max-width: 1000px;
+    margin: 10px auto;
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgb(150,0,0);
+    z-index: 2;
+}
+
+.linkContainer p {
+    margin: 0px;
+}
+
+.imageLinkForm {
+    padding: 10px;
+}
+
+@media screen and (max-width: 450px){
+    .linkContainer {
+        border-radius: 0px 0px 10px 10px;
+    }
+    
+    .modeBtn {
+        width: 50%;
+        font-size: 1.2em;
+    }
+}

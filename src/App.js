@@ -1,28 +1,160 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Navigation from './components/Navigation/Navigation';
+import Logo from './components/Logo/Logo';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import Rank from './components/Rank/Rank';
+import ImageDetection from './components/ImageDetection/ImageDetection';
+import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
+
+const config = {
+    "particles": {
+        "number": {
+            "value": 28,
+            "density": {
+                "enable": true,
+                "value_area": 1893.9580764488287
+            }
+        },
+        "color": {
+            "value": "#ff0000"
+        },
+        "shape": {
+            "type": "circle",
+            "stroke": {
+                "width": 0,
+                "color": "#000000"
+            },
+            "polygon": {
+                "nb_sides": 5
+            },
+            "image": {
+                "src": "img/github.svg",
+                "width": 100,
+                "height": 100
+            }
+        },
+        "opacity": {
+            "value": 0.5,
+            "random": false,
+            "anim": {
+                "enable": false,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+            }
+        },
+        "size": {
+            "value": 1,
+            "random": true,
+            "anim": {
+                "enable": false,
+                "speed": 40,
+                "size_min": 0.1,
+                "sync": false
+            }
+        },
+        "line_linked": {
+            "enable": true,
+            "distance": 363.00863131935887,
+            "color": "#ff0000",
+            "opacity": 0.4,
+            "width": 1
+        },
+        "move": {
+            "enable": true,
+            "speed": 6,
+            "direction": "none",
+            "random": false,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+            "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+            }
+        }
+    },
+    "retina_detect": true
+};
+
+const app = new Clarifai.App({
+    apiKey: '12db74f1006e4dbfaf4f6023df5434a3'
+});
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    constructor(){
+        super();
+        this.state = {
+            input: '',
+            imageUrl: '',
+            data: [],
+            mode: 'face' //or food
+        };
+    }
+    
+    render() {
+        return (
+            <div className="App">
+                <Navigation />
+                <Logo />
+                <Rank />
+                <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
+                {/* <Particles params={config}/> */}
+                <ImageDetection imageUrl={this.state.imageUrl} data={this.state.data}/>
+            </div>
+        );
+    }
+    
+    onInputChange = (event) => {
+        this.setState({input: event.target.value});
+    }
+    
+    onModeChange = (mode) => {
+        return (event) => {
+            const modeBtns = document.querySelectorAll('.modeBtn');
+            Array.from(modeBtns).forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            this.setState({mode});
+        }
+    }
+    
+    onSubmit = () => {
+        const input = this.state.input;
+        const mode = this.state.mode;
+        if (/http(s?):\/\/[a-zA-Z0-9/.-]+(.jpg$|.png$|.bmp$|.jpeg$)/.test(input) === false){
+            this.setState({imageUrl: ''});
+            return;
+        }
+                
+        // return;
+        if (mode === 'face'){
+            app.models.predict(Clarifai.DEMOGRAPHICS_MODEL, input).then(
+                (response) => {
+                    console.log(response);
+                    const data = response.outputs[0].data;
+                    if (data.regions){
+                        this.setState({data: data.regions, imageUrl: input}, ()=>{console.log(this.state);});
+                    }
+                },
+                function(err) {
+                    console.error(err);
+                }
+            );
+        } else if (mode === 'food'){
+            app.models.predict(Clarifai.FOOD_MODEL, input).then(
+                function(response) {
+                    console.log(response);
+                },
+                function(err) {
+                    console.error(err);
+                }
+            );
+        }
+        
+    }
 }
 
 export default App;

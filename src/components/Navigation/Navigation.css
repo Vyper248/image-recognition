@@ -1,0 +1,19 @@
+nav {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1.5em;
+}
+
+nav p {
+    margin-left: auto;
+    border-left: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    margin: 0px;
+    padding: 10px;
+    transition: background 0.5s;
+    cursor: pointer;
+}
+
+nav p:hover {
+    background-color: lightgray;
+}
