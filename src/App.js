@@ -91,6 +91,7 @@ class App extends Component {
             input: '',
             imageUrl: '',
             data: [],
+            selectedFace: 0,
             mode: 'face' //or food
         };
     }
@@ -103,7 +104,7 @@ class App extends Component {
                 <Rank />
                 <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
                 {/* <Particles params={config}/> */}
-                <ImageDetection imageUrl={this.state.imageUrl} data={this.state.data}/>
+                <ImageDetection imageUrl={this.state.imageUrl} data={this.state.data} onFaceSelect={this.onFaceSelect} faceIndex={this.state.selectedFace}/>
             </div>
         );
     }
@@ -121,25 +122,30 @@ class App extends Component {
         }
     }
     
+    onFaceSelect = (event) => {
+        this.setState({selectedFace: Number(event.target.getAttribute('index'))});
+    }
+    
     onSubmit = () => {
         const input = this.state.input;
         const mode = this.state.mode;
-        if (/http(s?):\/\/[a-zA-Z0-9/.-]+(.jpg$|.png$|.bmp$|.jpeg$)/.test(input) === false){
+        if (/http(s?):\/\/[a-zA-Z0-9/.-_]+(.jpg$|.png$|.bmp$|.jpeg$)/.test(input) === false){
             this.setState({imageUrl: ''});
             return;
         }
                 
         // return;
         if (mode === 'face'){
+            console.log('start prediction');
             app.models.predict(Clarifai.DEMOGRAPHICS_MODEL, input).then(
                 (response) => {
                     console.log(response);
                     const data = response.outputs[0].data;
                     if (data.regions){
-                        this.setState({data: data.regions, imageUrl: input}, ()=>{console.log(this.state);});
+                        this.setState({data: data.regions, imageUrl: input});
                     }
                 },
-                function(err) {
+                (err) => {
                     console.error(err);
                 }
             );

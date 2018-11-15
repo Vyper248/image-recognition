@@ -1,24 +1,20 @@
 import React from 'react';
 import './ImageAreaBox.css';
 
-const ImageAreaBox = ({region}) => {
+const ImageAreaBox = ({region, onClick, index, faceIndex}) => {
 
-    // region = {
-    //     top_row: 0.16825928,
-    //     bottom_row: 0.28445578,
-    //     left_col: 0.7487846,
-    //     right_col: 0.8262665
-    // }
-    
     if (!region) return <span></span>;
 
      const top = (region.top_row*100)+'%';
      const left = (region.left_col*100)+'%';
-     const width = ((region.right_col-region.left_col)*100)+'%';
-     const height = ((region.bottom_row-region.top_row)*100)+'%';
+     const bottom = (100-(region.bottom_row*100))+'%';
+     const right = (100-(region.right_col*100))+'%';
+     
+     let className = 'imageAreaBox';
+     if (faceIndex === index) className += ' selected';
     
     return (
-        <div className="imageAreaBox" style={{top, left, width, height}}></div>
+        <div className={className} style={{top, left, bottom, right}} onClick={onClick} index={index}></div>
     );
 };
 

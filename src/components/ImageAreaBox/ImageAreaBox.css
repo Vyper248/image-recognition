@@ -1,8 +1,8 @@
 .imageAreaBox {
-    border: 1px solid white;
+    border: 3px solid white;
     position: absolute;
-    top: 16.82%;
-    left: 74.87%;
-    width: 8%;
-    height: 12%;
+}
+
+.imageAreaBox.selected {
+    border: 3px solid rgb(0, 255, 3);
 }

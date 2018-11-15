@@ -26,4 +26,22 @@
     margin-top: 0px;
     border-radius: 10px;
     flex-shrink: 0;
+    padding: 10px;
+}
+
+.statHeader {
+    color: lightgray;
+    font-variant: small-caps;
+}
+
+.statData {
+    border-bottom: 1px solid lightgray;
+    padding: 10px;
+}
+
+.imageStats > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
