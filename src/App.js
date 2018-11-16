@@ -5,6 +5,8 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import ImageDetection from './components/ImageDetection/ImageDetection';
+import Signin from './components/Signin/Signin';
+import Register from './components/Register/Register';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
@@ -92,21 +94,47 @@ class App extends Component {
             imageUrl: '',
             data: [],
             selectedFace: 0,
-            mode: 'face' //or food
+            mode: 'face',
+            route: 'signin',
+            isSignedIn: false
         };
     }
     
     render() {
         return (
             <div className="App">
-                <Navigation />
+                <Navigation onChangeRoute={this.changeRoute} isSignedIn={this.state.isSignedIn}/>
                 <Logo />
-                <Rank />
-                <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
-                {/* <Particles params={config}/> */}
-                <ImageDetection imageUrl={this.state.imageUrl} data={this.state.data} onFaceSelect={this.onFaceSelect} faceIndex={this.state.selectedFace} mode={this.state.mode}/>
+                { this.getRoute() }
             </div>
         );
+    }
+    
+    getRoute = () => {
+        const route = this.state.route;
+        const {imageUrl, data, selectedFace, mode} = this.state;
+
+        switch(route){
+            case 'home': return (
+                <div>
+                    <Rank />
+                    <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
+                    {/* <Particles params={config}/> */}
+                    <ImageDetection imageUrl={imageUrl} data={data} onFaceSelect={this.onFaceSelect} faceIndex={selectedFace} mode={mode}/>
+                </div>
+            );
+            case 'signin': return <Signin onSignin={this.changeRoute('home')} onRegister={this.changeRoute('register')}/>;
+            case 'register': return <Register onClick={this.changeRoute('home')}/> ;
+            default: return <Signin onClick={this.changeRoute('home')}/>;
+        }
+    }
+    
+    changeRoute = (route) => {
+        return () => {
+            if (route === 'home') this.setState({isSignedIn: true});
+            else if (route === 'signin' || route === 'register') this.setState({isSignedIn: false});
+            this.setState({route});
+        }
     }
     
     onInputChange = (event) => {
