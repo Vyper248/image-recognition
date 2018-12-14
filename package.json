@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.18.3",
     "clarifai": "^2.9.0",
+    "express": "^4.16.4",
     "gh-pages": "^2.0.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -14,14 +16,17 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build && rm -R build",
-    "start": "react-scripts start",
+    "start": "node server.js",
+    "start-r": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy-heroku": "git checkout -b deployment && npm run build && rm -R public && rm -R src && git add . && git commit -m 'prep' && git push heroku deployment && git checkout master && git branch -D deployment"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "proxy": "http://localhost:8080",
   "homepage": "http://vyper248.github.io/image-recognition",
   "browserslist": [
     ">0.2%",
