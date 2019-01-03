@@ -96,7 +96,14 @@ class App extends Component {
             selectedFace: 0,
             mode: 'face',
             route: 'signin',
-            isSignedIn: false
+            isSignedIn: false,
+            user: {
+                id: '',
+                name: '',
+                email: '',
+                entries: 0,
+                joined: ''
+            }
         };
     }
     
@@ -110,6 +117,12 @@ class App extends Component {
         );
     }
     
+    // componentDidMount(){
+    //     fetch('/profile/0').then(resp => resp.text()).then(data => {
+    // 
+    //     });
+    // }
+    
     getRoute = () => {
         const route = this.state.route;
         const {imageUrl, data, selectedFace, mode} = this.state;
@@ -117,16 +130,21 @@ class App extends Component {
         switch(route){
             case 'home': return (
                 <div>
-                    <Rank />
+                    <Rank entries={this.state.user.entries} name={this.state.user.name} />
                     <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
                     {/* <Particles params={config}/> */}
                     <ImageDetection imageUrl={imageUrl} data={data} onFaceSelect={this.onFaceSelect} faceIndex={selectedFace} mode={mode}/>
                 </div>
             );
-            case 'signin': return <Signin onSignin={this.changeRoute('home')} onRegister={this.changeRoute('register')}/>;
+            case 'signin': return <Signin onSignin={this.onSignin} onRegister={this.changeRoute('register')}/>;
             case 'register': return <Register onClick={this.changeRoute('home')}/> ;
             default: return <Signin onClick={this.changeRoute('home')}/>;
         }
+    }
+    
+    onSignin = (user) => {
+        this.setState({user});
+        this.changeRoute('home')();
     }
     
     changeRoute = (route) => {
@@ -163,11 +181,14 @@ class App extends Component {
         // }
                 
         // return;
+        if (input.length === 0) return;
+        
         if (mode === 'face'){
             console.log('start prediction');
             app.models.predict(Clarifai.DEMOGRAPHICS_MODEL, input).then(
                 (response) => {
                     console.log(response);
+                    this.updateCounter();
                     const data = response.outputs[0].data;
                     if (data.regions){
                         this.setState({data: data.regions, imageUrl: input});
@@ -183,6 +204,7 @@ class App extends Component {
             app.models.predict(Clarifai.FOOD_MODEL, input).then(
                 (response) => {
                     console.log(response);
+                    this.updateCounter();
                     const data = response.outputs[0].data;
                     if (data.concepts.length > 0){
                         this.setState({data, imageUrl: input});
@@ -195,7 +217,20 @@ class App extends Component {
                 }
             );
         }
-        
+    }
+    
+    updateCounter = () => {
+        fetch('/image', {
+            method: 'put',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+                id: this.state.user.id
+            }),
+        }).then(resp => resp.json()).then(data => {
+            if (data.status === 'success'){
+                this.setState(Object.assign(this.state.user, {entries: data.data}));
+            }
+        });
     }
 }
 

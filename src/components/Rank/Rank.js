@@ -1,11 +1,11 @@
 import React from 'react';
 import './Rank.css';
 
-const Rank = () => {
+const Rank = ({name, entries}) => {
     return (
         <div className="rank">
-            <p>Your current rank is...</p>
-            <span>#1</span>
+            <p>{name}, your current entry count is...</p>
+            <span>{entries}</span>
         </div>
     );
 };

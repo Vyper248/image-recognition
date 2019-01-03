@@ -8,10 +8,14 @@ class Register extends Component {
             name: '',
             email: '',
             password: '',
+            error: '',
         }
     }
     
     render(){
+        let error = <div className="formError">{this.state.error}</div>;
+        if (this.state.error.length === 0) error = <div></div>;
+        
         return (
             <div className="signin">
                 <h4>Register</h4>
@@ -30,6 +34,7 @@ class Register extends Component {
                     </div>
                     <button className="signinBtn" onClick={this.onSubmit}>Submit</button>
                 </div>
+                {error}
             </div>
         );
     }
@@ -47,6 +52,8 @@ class Register extends Component {
     }
     
     onSubmit = () => {
+        if (!this.checkValidity()) return;
+        
         fetch('/register', {
             method: 'POST',
             body: JSON.stringify({name: this.state.name, email: this.state.email, password: this.state.password}),
@@ -54,13 +61,29 @@ class Register extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(resp => resp.json()).then(data => {
-            console.log(data);
             if (data.status === 'success'){
                 this.props.onClick();
             } else {
-                console.log(data.error);
+                this.setState({error: data.message});
             }
         }).catch(err => console.log(err));
+    }
+    
+    checkValidity = () => {
+        const {name, email, password} = this.state;
+        if (name.length === 0){
+            this.setState({error: 'Please input your name'});
+            return false;
+        }
+        if (email.length === 0 || !/.+@.+\.[a-zA-Z]+/.test(email)){
+            this.setState({error: 'Please make sure your email is valid'});
+            return false;
+        }
+        if (password.length < 8){
+            this.setState({error: 'Please make sure your password is at least 8 characters'});
+            return false;
+        }
+        return true;
     }
 };
 

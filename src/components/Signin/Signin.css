@@ -2,6 +2,7 @@
     border: 1px solid white;
     width: 400px;
     margin: auto;
+    margin-top:20px;
     padding: 20px;
     text-align: left;
 }
@@ -39,4 +40,19 @@
 .signin > p {
     cursor: pointer;
     font-size: 0.9em;
+}
+
+.formError {
+    margin-top: 20px;
+    text-align: center;
+    padding: 5px;
+    background-color: red;
+    color: black;
+    font-weight: bold;
+}
+
+@media screen and (max-width:700px){
+    .signin {
+        margin-top:120px;
+    }
 }

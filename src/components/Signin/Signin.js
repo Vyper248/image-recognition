@@ -7,10 +7,14 @@ class Signin extends Component {
         this.state = {
             email: '',
             password: '',
+            error: '',
         };
     }
     
     render(){
+        let error = <div className="formError">{this.state.error}</div>;
+        if (this.state.error.length === 0) error = <div></div>;
+        
         return (
             <div className="signin">
                 <h4>Sign In</h4>
@@ -26,6 +30,7 @@ class Signin extends Component {
                     <button className="signinBtn" onClick={this.onSubmit}>Sign In</button>
                 </div>
                 <p onClick={this.props.onRegister}>Sign up</p>
+                {error}
             </div>
         );
     }
@@ -46,11 +51,11 @@ class Signin extends Component {
                 "Content-Type": "application/json"
             }   
         }).then(resp => resp.json()).then(data => {
-            console.log(data);
-            if (data.status === 'sucess'){
-                this.props.onSignin();
+            // console.log(data);
+            if (data.status === 'success'){
+                this.props.onSignin(data.data);
             } else {
-                console.log('Signin Error: ', data.error);
+                this.setState({error: data.message});
             }
         }).catch(err => {
             console.log('Signin Error: ', err);
