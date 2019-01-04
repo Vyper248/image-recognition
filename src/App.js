@@ -130,9 +130,9 @@ class App extends Component {
     }
     
     getRoute = () => {
-        let route = this.state.route;
+        const route = this.state.route;
         const {imageUrl, data, selectedFace, mode} = this.state;
-        route = 'home';
+
         switch(route){
             case 'home': return (
                 <div>
