@@ -30,7 +30,6 @@
     "extends": "react-app"
   },
   "proxy": "http://localhost:8080",
-  "homepage": "http://vyper248.github.io/image-recognition",
   "browserslist": [
     ">0.2%",
     "not dead",
