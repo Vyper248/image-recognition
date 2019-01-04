@@ -8,7 +8,6 @@ import ImageDetection from './components/ImageDetection/ImageDetection';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 
 const config = {
     "particles": {
@@ -16,7 +15,7 @@ const config = {
             "value": 28,
             "density": {
                 "enable": true,
-                "value_area": 1893.9580764488287
+                "value_area": 3000
             }
         },
         "color": {
@@ -99,10 +98,6 @@ const initialState = {
     }
 };
 
-const app = new Clarifai.App({
-    apiKey: '12db74f1006e4dbfaf4f6023df5434a3'
-});
-
 class App extends Component {
     constructor(){
         super();
@@ -134,22 +129,18 @@ class App extends Component {
         );
     }
     
-    // componentDidMount(){
-    //     fetch('/profile/0').then(resp => resp.text()).then(data => {
-    // 
-    //     });
-    // }
-    
     getRoute = () => {
-        const route = this.state.route;
+        let route = this.state.route;
         const {imageUrl, data, selectedFace, mode} = this.state;
-
+        route = 'home';
         switch(route){
             case 'home': return (
                 <div>
                     <Rank entries={this.state.user.entries} name={this.state.user.name} />
                     <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
-                    {/* <Particles params={config}/> */}
+                    <div className="particles">
+                        <Particles params={config}/>
+                    </div>
                     <ImageDetection imageUrl={imageUrl} data={data} onFaceSelect={this.onFaceSelect} faceIndex={selectedFace} mode={mode}/>
                 </div>
             );
@@ -193,12 +184,7 @@ class App extends Component {
     onSubmit = () => {
         const input = this.state.input;
         const mode = this.state.mode;
-        // if (/http(s?):\/\/[a-zA-Z0-9/.-_]+(.jpg$|.png$|.bmp$|.jpeg$)/.test(input) === false){
-        //     this.setState({imageUrl: ''});
-        //     return;
-        // }
-                
-        // return;
+
         if (input.length === 0) return;
         
         fetch('/clarifai', {
@@ -211,44 +197,6 @@ class App extends Component {
         }).catch(err => {
             this.setState({imageUrl: '', data: []});
         });
-        
-        return;
-        if (mode === 'face'){
-            // console.log('start prediction');
-            app.models.predict(Clarifai.DEMOGRAPHICS_MODEL, input).then(
-                (response) => {
-                    // console.log(response);
-                    this.updateCounter();
-                    const data = response.outputs[0].data;
-                    if (data.regions){
-                        this.setState({data: data.regions, imageUrl: input});
-                    } else {
-                        this.setState({imageUrl: input, data: []});
-                    }
-                },
-                (err) => {
-                    console.error(err);
-                    this.setState({imageUrl: '', data: []});
-                }
-            );
-        } else if (mode === 'food'){
-            app.models.predict(Clarifai.FOOD_MODEL, input).then(
-                (response) => {
-                    // console.log(response);
-                    this.updateCounter();
-                    const data = response.outputs[0].data;
-                    if (data.concepts.length > 0){
-                        this.setState({data, imageUrl: input});
-                    } else {
-                        this.setState({imageUrl: input});
-                    }
-                },
-                (err) => {
-                    console.error(err);
-                    this.setState({imageUrl: '', data: []});
-                }
-            );
-        }
     }
     
     updateCounter = () => {
