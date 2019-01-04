@@ -1,13 +1,26 @@
-const knex = require('knex')({
-  client: 'pg',
-  version: '11.1',
-  connection: {
-    host : '127.0.0.1',
-    user : 'vyper374',
-    password : '',
-    database : 'smart-brain'
-  }
-});
+let knex;
+
+if (process.env.DATABASE_URL){
+    knex = require('knex')({
+      client: 'pg',
+      version: '11.1',
+      connection: {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+      }
+    });
+} else {
+    knex = require('knex')({
+      client: 'pg',
+      version: '11.1',
+      connection: {
+        host : '127.0.0.1',
+        user : 'vyper374',
+        password : '',
+        database : 'smart-brain'
+      }
+    });
+}
 
 // knex.schema.dropTableIfExists('users').then(() => {
 //     return knex.schema.hasTable('users');
