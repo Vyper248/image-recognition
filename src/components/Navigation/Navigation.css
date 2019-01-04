@@ -16,4 +16,5 @@ nav p {
 
 nav p:hover {
     background-color: lightgray;
+    color: black;
 }

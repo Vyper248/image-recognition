@@ -124,6 +124,9 @@ class App extends Component {
             <div className="App">
                 <Navigation onChangeRoute={this.changeRoute} isSignedIn={this.state.isSignedIn}/>
                 <Logo />
+                <div className="particles">
+                    <Particles params={config}/>
+                </div>
                 { this.getRoute() }
             </div>
         );
@@ -138,9 +141,6 @@ class App extends Component {
                 <div>
                     <Rank entries={this.state.user.entries} name={this.state.user.name} />
                     <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} onModeChange={this.onModeChange}/>
-                    <div className="particles">
-                        <Particles params={config}/>
-                    </div>
                     <ImageDetection imageUrl={imageUrl} data={data} onFaceSelect={this.onFaceSelect} faceIndex={selectedFace} mode={mode}/>
                 </div>
             );

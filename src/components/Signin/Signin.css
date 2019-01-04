@@ -36,6 +36,8 @@
     display: block;
     padding: 5px;
     font-size: 1.2em;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .signin > p {
