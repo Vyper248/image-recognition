@@ -201,6 +201,18 @@ class App extends Component {
         // return;
         if (input.length === 0) return;
         
+        fetch('/clarifai', {
+            method: 'post',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({input, mode})
+        }).then(resp => resp.json()).then(returnVal => {
+            this.setState(returnVal);
+            if (returnVal.data.length) this.updateCounter();
+        }).catch(err => {
+            this.setState({imageUrl: '', data: []});
+        });
+        
+        return;
         if (mode === 'face'){
             // console.log('start prediction');
             app.models.predict(Clarifai.DEMOGRAPHICS_MODEL, input).then(

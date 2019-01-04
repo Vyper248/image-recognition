@@ -9,55 +9,20 @@ app.use(bodyParser.json());
 
 const db = require('./database');
 
-app.post('/signin', (req, res) => {
-    const {email, password} = req.body;
-    
-    db('login').where({email}).then(users => {
-        if (users.length && bcrypt.compareSync(password, users[0].hash)) return db('users').where({email});
-        else throw Error();
-    }).then(users => {
-        if (users.length) res.send({status: 'success', data: users[0]});
-    }).catch(err => {
-        res.send({status: 'error', message: 'Incorrect email or password.'});
-    });
-});
+//POST to /signin
+app.use('/signin', require('./routes/signin'));
 
-app.post('/register', async (req, res) => {
-    const {name, email, password} = req.body;
-    
-    db.transaction(trx => {
-        trx('login').insert({hash: bcrypt.hashSync(password), email})
-        .then(result => trx('users').returning('*').insert({name,email}))
-        .then(trx.commit)
-        .catch(trx.rollback);
-    })
-    .then(result => res.send({status: 'success', data: result[0]}))
-    .catch(err => {
-        if (err) res.send({status: 'error', message: 'Unable to register.'});
-    });
-});
+//POST to /register
+app.use('/register', require('./routes/register'));
 
-app.get('/profile/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    
-    db('users').select('*').where({id}).then(users => {
-        if (users.length) res.send({status: 'success', data: users[0]});
-        else throw Error();
-    }).catch(err => {
-        res.status(400).send({status: 'error', message: 'User not found.'});
-    }); 
-});
+//PUT to /image
+app.use('/image', require('./routes/image'));
 
-app.put('/image', (req, res) => {
-    const id = parseInt(req.body.id);
-    
-    db('users').returning('entries').where({id}).increment({entries: 1}).then(entries => {
-        if (entries.length) res.send({status: 'success', data: parseInt(entries[0])});
-        else throw Error();
-    }).catch(err => {
-        res.status(400).send({status: 'error', message: 'User not found.'});
-    }); 
-});
+//GET to /profile/:id
+app.use('/profile', require('./routes/profile'));
+
+//POST to /clarifai
+app.use('/clarifai', require('./routes/clarifai'));
 
 app.get('*', (req, res) => {
     res.sendFile(__dirname + '/build/index.html');
