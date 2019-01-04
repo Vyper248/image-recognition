@@ -61,7 +61,7 @@
 
 .linkContainer {
     border: 1px solid white;
-    box-shadow: 1px 1px 5px 1px gray;
+    /* box-shadow: 1px 1px 5px 1px gray; */
     max-width: 1000px;
     margin: 0px auto 10px auto;
     position: relative;

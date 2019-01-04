@@ -82,6 +82,23 @@ const config = {
     "retina_detect": true
 };
 
+const initialState = {
+    input: '',
+    imageUrl: '',
+    data: [],
+    selectedFace: 0,
+    mode: 'face',
+    route: 'signin',
+    isSignedIn: false,
+    user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+    }
+};
+
 const app = new Clarifai.App({
     apiKey: '12db74f1006e4dbfaf4f6023df5434a3'
 });
@@ -136,21 +153,22 @@ class App extends Component {
                     <ImageDetection imageUrl={imageUrl} data={data} onFaceSelect={this.onFaceSelect} faceIndex={selectedFace} mode={mode}/>
                 </div>
             );
-            case 'signin': return <Signin onSignin={this.onSignin} onRegister={this.changeRoute('register')}/>;
-            case 'register': return <Register onClick={this.changeRoute('home')}/> ;
-            default: return <Signin onClick={this.changeRoute('home')}/>;
+            case 'signin': return <Signin onClick={this.onSigninAndRegister} onRegister={this.changeRoute('register')}/>;
+            case 'register': return <Register onClick={this.onSigninAndRegister}/> ;
+            default: return <Signin onClick={this.onSigninAndRegister} onRegister={this.changeRoute('register')}/>;
         }
     }
     
-    onSignin = (user) => {
+    onSigninAndRegister = (user) => {
         this.setState({user});
+        this.setState({imageUrl: '', data: []});
         this.changeRoute('home')();
     }
     
     changeRoute = (route) => {
         return () => {
             if (route === 'home') this.setState({isSignedIn: true});
-            else if (route === 'signin' || route === 'register') this.setState({isSignedIn: false});
+            else if (route === 'signin' || route === 'register') this.setState(initialState);
             this.setState({route});
         }
     }
@@ -184,26 +202,27 @@ class App extends Component {
         if (input.length === 0) return;
         
         if (mode === 'face'){
-            console.log('start prediction');
+            // console.log('start prediction');
             app.models.predict(Clarifai.DEMOGRAPHICS_MODEL, input).then(
                 (response) => {
-                    console.log(response);
+                    // console.log(response);
                     this.updateCounter();
                     const data = response.outputs[0].data;
                     if (data.regions){
                         this.setState({data: data.regions, imageUrl: input});
                     } else {
-                        this.setState({imageUrl: input});
+                        this.setState({imageUrl: input, data: []});
                     }
                 },
                 (err) => {
                     console.error(err);
+                    this.setState({imageUrl: '', data: []});
                 }
             );
         } else if (mode === 'food'){
             app.models.predict(Clarifai.FOOD_MODEL, input).then(
                 (response) => {
-                    console.log(response);
+                    // console.log(response);
                     this.updateCounter();
                     const data = response.outputs[0].data;
                     if (data.concepts.length > 0){
@@ -214,6 +233,7 @@ class App extends Component {
                 },
                 (err) => {
                     console.error(err);
+                    this.setState({imageUrl: '', data: []});
                 }
             );
         }

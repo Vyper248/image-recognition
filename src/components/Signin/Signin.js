@@ -53,7 +53,7 @@ class Signin extends Component {
         }).then(resp => resp.json()).then(data => {
             // console.log(data);
             if (data.status === 'success'){
-                this.props.onSignin(data.data);
+                this.props.onClick(data.data);
             } else {
                 this.setState({error: data.message});
             }

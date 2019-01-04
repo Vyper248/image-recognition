@@ -62,7 +62,7 @@ class Register extends Component {
             }
         }).then(resp => resp.json()).then(data => {
             if (data.status === 'success'){
-                this.props.onClick();
+                this.props.onClick(data.data);
             } else {
                 this.setState({error: data.message});
             }
