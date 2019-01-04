@@ -5,3 +5,7 @@
 .rank {
     margin-top: 50px;
 }
+
+.rank p {
+    font-size: 1.2em;
+}
