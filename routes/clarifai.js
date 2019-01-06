@@ -28,7 +28,7 @@ app.post('/', (req, res) => {
             (response) => {
                 const data = response.outputs[0].data;
                 if (data.concepts.length > 0){
-                    res.send({data: data, imageUrl: input});
+                    res.send({data: data.concepts, imageUrl: input});
                 } else {
                     res.send({data: [], imageUrl: input});
                     

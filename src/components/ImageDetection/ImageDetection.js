@@ -61,7 +61,7 @@ const getImageStats = (data, faceIndex, mode) => {
         );
         else return <div>No Faces Found</div>
     } else if (mode === 'food'){
-        const foodConcepts = data.concepts ? data.concepts.map(concept => { return {name: concept.name, value: concept.value};}) : [];
+        const foodConcepts = data ? data.map(concept => { return {name: concept.name, value: concept.value};}) : [];
         
         if (foodConcepts.length > 0) return (
             <div>

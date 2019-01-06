@@ -88,4 +88,13 @@
         width: 50%;
         font-size: 1.2em;
     }
+    
+    .linkForm input {
+        font-size: 1em;
+        height: 50px;
+    }
+    
+    .linkForm button {
+        height: 50px;
+    }
 }

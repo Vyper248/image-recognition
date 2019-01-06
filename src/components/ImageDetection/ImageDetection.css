@@ -72,6 +72,22 @@
     text-align: left;
 }
 
-@media screen and (max-width:900px){
+@media screen and (max-width:700px){
+    .imageDetection {
+        flex-direction: column;
+        justify-content: flex-start;
+        max-height: none;
+    }
     
+    .imageStats {
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .imageStats > div {
+        max-width: 300px;
+        margin: auto;
+    }
 }
