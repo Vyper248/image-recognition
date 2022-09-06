@@ -36,6 +36,7 @@ knex.schema.hasTable('users').then(exists => {
         });
     }
 }).catch(err => {
+    console.log(err.message);
     if (err) console.log("Can't create table: users");
 });
 
