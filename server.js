@@ -29,7 +29,6 @@ app.get('*', (req, res) => {
 });
 
 let port = process.env.PORT || 8080;
-let ip = process.env.IP;
-app.listen(port, ip, function(){
+app.listen(port, function(){
     console.log('Listening on port '+port);
 });
