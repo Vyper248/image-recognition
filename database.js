@@ -4,11 +4,7 @@ if (process.env.DATABASE_URL){
     console.log('Connected to db via DATABASE_URL');
     knex = require('knex')({
       client: 'cockroachdb',
-      version: '11.1',
-      connection: {
-        connectionString: process.env.DATABASE_URL,
-        ssl: true,
-      }
+      connection: process.env.DATABASE_URL
     });
 } else {
     console.log('Connected to local db');
