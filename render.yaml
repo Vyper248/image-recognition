@@ -9,11 +9,4 @@ services:
     plan: free # optional; defaults to starter
     numInstances: 1
     envVars:
-      - key: DATABASE_URL # Render PostgreSQL database
-        fromDatabase:
-          name: postgresql-tetrahedral-24045
-          property: connectionString
 
-databases: # Render PostgreSQL database
-  - name: postgresql-tetrahedral-24045
-    ipAllowList: [] # only allow internal connections

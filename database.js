@@ -25,7 +25,6 @@ if (process.env.DATABASE_URL){
 // })
 
 knex.schema.hasTable('users').then(exists => {
-    console.log('Users: ', exists);
     if (!exists){
         return knex.schema.createTable('users', t => {
             t.increments('id').primary();
